@@ -5,7 +5,6 @@ import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificatio
 import dev.tapeline.ianus.application.interfaces.EmailSender
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.EmailMessage
-import dev.tapeline.ianus.domain.email.compose2FAEmail
 import dev.tapeline.ianus.domain.session.SessionOrigin
 import dev.tapeline.ianus.domain.twofactor.TwoFactorKeyClaims
 import dev.tapeline.ianus.domain.user.User

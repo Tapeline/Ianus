@@ -14,6 +14,3 @@ plugins {
 rootProject.name = "Ianus"
 
 include(":app")
-include(":shared")
-
-//include("frontend")
