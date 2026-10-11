@@ -1,0 +1,9 @@
+openapi-processor-mapping: v2
+
+options:
+  package-name: dev.tapeline.ianus.presentation.openapi
+  model-type: record
+  bean-validation: true
+
+map:
+  result: org.springframework.http.ResponseEntity

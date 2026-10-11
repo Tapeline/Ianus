@@ -1,0 +1,771 @@
+openapi: 3.0.2
+info:
+  title: Ianus Accounts API
+  description: Ianus public API for users to manage their accounts
+  version: 1.0.0
+servers:
+  - url: https://id.tapeline.dev/account
+tags:
+  - name: Entrypoints
+    description: Entrypoints of unauthenticated to Ianus API
+  - name: Account data
+    description: Account data management
+  - name: Sessions
+    description: Active sessions management
+  - name: App access
+    description: Manage applications' access to the account
+  - name: Two Factor Auth
+    description: Two-Factor auth methods
+
+
+
+paths:
+  /api/v1/login:
+    post:
+      summary: Login using username and password
+      tags: [Entrypoints]
+      security: []
+      parameters:
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        '201':
+          description: Login successful. Returns session id in cookie SESSIONID
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: SESSIONID=abcde12345; Path=/; HttpOnly; Secure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '200':
+          description: Credentials valid, but logging in requires further confirmation with 2FA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginRequires2FAResponse"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: I2FA=abcde12345; Path=/; HttpOnly; Secure
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Account login process blocked for security concerns
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/register:
+    post:
+      summary: Register new account
+      tags: [Entrypoints]
+      security: []
+      parameters:
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        '200':
+          description: Registration successful. Returns session id in cookie SESSIONID
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: SESSIONID=abcde12345; Path=/; HttpOnly; Secure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Account login process blocked for security concerns
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: Account already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/2fa/confirm:
+    post:
+      summary: Perform 2FA confirmation
+      tags: [2FA]
+      security:
+        - verification2faCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TFAConfirmationRequest"
+      responses:
+        '200':
+          description: |
+            Login successful. Returns session token in cookie SESSIONID and persistent 2fa confirmation in SESSION2FA
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: |
+                  SESSIONID=abcde12345; Path=/; HttpOnly; Secure
+                  SESSION2FA=abcde12345; Path=/; HttpOnly; Secure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Invalid code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Account login process blocked for security concerns
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/2fa/toggle:
+    put:
+      summary: Enable/disable 2FA
+      tags: [2FA]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Toggle2FARequest"
+      responses:
+        '200':
+          description: Toggle successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Toggle2FAResponse"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: Cannot toggle 2FA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my:
+    get:
+      summary: Get my account data
+      tags: [Account data]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MyAccountResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/email/change:
+    post:
+      summary: Begin changing email
+      tags: [Account data]
+      parameters:
+        - name: User-Agent
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BeginEmailChangeRequest"
+      responses:
+        '201':
+          description: Confirmation email sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BeginEmailChangeResponse"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: This email is already set for the account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/email/confirm:
+    put:
+      summary: Confirm changing email
+      tags: [Account data]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmEmailChangeRequest"
+      responses:
+        '200':
+          description: Confirmation successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfirmEmailChangeResponse"
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: Email is not pending confirmation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/sessions:
+    get:
+      summary: Get all active sessions on this account
+      tags: [ Sessions ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSessionsResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      summary: Revoke ALL sessions
+      tags: [ Sessions ]
+      responses:
+        '204':
+          description: Revoked
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/sessions/{session_id}:
+    get:
+      summary: Get summary about a session
+      tags: [ Sessions ]
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      summary: Revoke session
+      tags: [ Sessions ]
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '204':
+          description: Revoked
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/apps:
+    get:
+      summary: Get all apps that have access to this account
+      tags: [App access]
+      parameters:
+        - name: search
+          in: query
+          required: false
+          description: Search query substring
+          schema:
+            type: string
+            nullable: true
+            default: null
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListAppsAccessesResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/v1/my/apps/{access_id}:
+    get:
+      summary: Get details about an access
+      tags: [App access]
+      parameters:
+        - name: access_id
+          in: path
+          required: true
+          description: Id of a given access grant
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppAccessResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      summary: Revoke access
+      tags: [App access]
+      parameters:
+        - name: access_id
+          in: path
+          required: true
+          description: Id of a given access grant
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '204':
+          description: OK
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          nullable: false
+          minLength: 1
+        password:
+          type: string
+          format: password
+          nullable: false
+          minLength: 1
+    LoginResponse:
+      type: object
+      required:
+        - user_id
+        - session_id
+      properties:
+        user_id:
+          type: string
+          minLength: 1
+          nullable: false
+        session_id:
+          type: string
+          minLength: 1
+          nullable: false
+    LoginRequires2FAResponse:
+      type: object
+      required:
+        - user_id
+      properties:
+        user_id:
+          type: string
+          minLength: 1
+          nullable: false
+
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 1
+          nullable: false
+        password:
+          type: string
+          format: password
+          minLength: 1
+          nullable: false
+    RegisterResponse:
+      type: object
+      required:
+        - user_id
+        - session_id
+      properties:
+        user_id:
+          type: string
+          minLength: 1
+          nullable: false
+        session_id:
+          type: string
+          minLength: 1
+          nullable: false
+
+    TFAConfirmationRequest:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          nullable: false
+
+    Toggle2FARequest:
+      type: object
+      required:
+        - 2fa_enabled
+      properties:
+        2fa_enabled:
+          type: boolean
+          nullable: false
+    Toggle2FAResponse:
+      type: object
+      required:
+        - 2fa_enabled
+      properties:
+        2fa_enabled:
+          type: boolean
+          nullable: false
+
+    MyAccountResponse:
+      type: object
+      required:
+        - username
+        - email
+      properties:
+        username:
+          type: string
+          minLength: 1
+          nullable: false
+        email:
+          type: string
+          nullable: true
+          minLength: 1
+
+    BeginEmailChangeRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          minLength: 1
+          nullable: false
+    BeginEmailChangeResponse:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          minLength: 1
+          nullable: false
+
+    ConfirmEmailChangeRequest:
+      type: object
+      required:
+        - code
+        - email
+      properties:
+        code:
+          type: string
+          minLength: 1
+          nullable: false
+        email:
+          type: string
+          nullable: false
+          minLength: 1
+    ConfirmEmailChangeResponse:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          minLength: 1
+          nullable: false
+
+    ErrorResponse:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          description: Machine readable error code
+          example: "UNAUTHORISED"
+          minLength: 1
+          nullable: false
+        message:
+          type: string
+          description: Human readable error description
+          example: "Cannot perform this action"
+          minLength: 1
+          nullable: false
+
+    ListAppsAccessesResponse:
+      type: array
+      nullable: false
+      items:
+        type: object
+        required:
+          - id
+          - app_name
+          - granted_at
+        properties:
+          id:
+            type: string
+            minLength: 1
+            nullable: false
+          app_name:
+            type: string
+            minLength: 1
+            nullable: false
+          granted_at:
+            type: string
+            format: date-time
+            nullable: false
+            minLength: 1
+    AppAccessResponse:
+      type: object
+      required:
+        - id
+        - app_name
+        - app_client_id
+        - scopes
+        - granted_at
+        - last_used_at
+      properties:
+        id:
+          type: string
+          minLength: 1
+          nullable: false
+        app_name:
+          type: string
+          minLength: 1
+          nullable: false
+        app_client_id:
+          type: string
+          minLength: 1
+          nullable: false
+        scopes:
+          type: array
+          nullable: false
+          items:
+            type: string
+            minLength: 1
+            nullable: false
+        granted_at:
+          type: string
+          format: date-time
+          nullable: false
+          minLength: 1
+        last_used_at:
+          type: string
+          format: date-time
+          nullable: false
+          minLength: 1
+
+    SessionResponse:
+      type: object
+      required:
+        - id
+        - origin
+        - created_at
+        - ttl
+      properties:
+        id:
+          type: string
+          minLength: 1
+          nullable: false
+        origin:
+          type: string
+          minLength: 1
+          nullable: false
+        created_at:
+          type: string
+          format: date-time
+          minLength: 1
+          nullable: false
+        ttl:
+          type: integer
+          description: in milliseconds
+          nullable: false
+    ListSessionsResponse:
+      type: array
+      nullable: false
+      items:
+        $ref: "#/components/schemas/SessionResponse"
+
+
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: SESSIONID
+    verification2faCookie:
+      type: apiKey
+      in: cookie
+      name: I2FA
+    persistent2faCookie:
+      type: apiKey
+      in: cookie
+      name: SESSION2FA
+
+
+security:
+  - cookieAuth: []

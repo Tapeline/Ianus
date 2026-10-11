@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: migrations/0001-create-users.yml
+  - include:
+      file: migrations/0002-create-sessions.yml

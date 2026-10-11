@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0001-create-users
+      author: Tapeline
+      changes:
+        - createTable:
+            tableName: ianus_users
+            columns:
+              - column:
+                  name: id
+                  type: text
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: tfa
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: session_ttl
+                  type: bigint
+                  constraints:
+                    nullable: false

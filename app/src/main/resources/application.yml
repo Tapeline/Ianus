@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ianus
+    username: dbaas
+    password: dbaas
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/migrations/master.yml
+
+  mail:
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+
+app:
+  email-sender: smtp
+
+  2fa:
+    verificationTtl: 5m
+    persistentTtl: 1h
+    signingKey: changeme
+    encryptionKey: changeme
+
+  sessions:
+    minSessionTtl: 10m
+    maxSessionTtl: 30d
+    defaultSessionTtl: 7d
+    sessionIdLengthBytes: 128
+
+  registration:
+    minPasswordLength: 8
+    enabled: true
+
+  db:
+    jdbcUrl: "jdbc:postgresql://localhost:5432/ianus"
+    username: dbaas
+    password: dbaas
+    pool-size: 30
+
+logging:
+  level:
+    # org.springframework.security: TRACE
+    # org.springframework.web: DEBUG
+    # org.springframework.boot.autoconfigure: DEBUG
+    # org.springframework.web.servlet.DispatcherServlet: TRACE
+    # org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    # org.springframework.web.servlet.view: TRACE
+gg:
+  jte:
+    developmentMode: true
+    #usePrecompiledTemplates: true
+    #templateLocation: app/src/main/jte

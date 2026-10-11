@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0002-create-sessions
+      author: Tapeline
+      changes:
+        - createTable:
+            tableName: ianus_sessions
+            columns:
+              - column:
+                  name: id
+                  type: text
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: user_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: origin
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ttl
+                  type: bigint
+                  constraints:
+                    nullable: false

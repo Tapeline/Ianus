@@ -1,0 +1,42 @@
+{% extends "base/page.html" %}
+
+{% block extend_head %}
+<style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #fcfcfc;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+    .entry-card {
+      max-width: 400px;
+      width: 90%;
+    }
+    .entry-card .mdl-card__title {
+      background: rgb(96,125,139);
+      color: white;
+    }
+    .error-message {
+      color: #d32f2f;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="mdl-card mdl-shadow--6dp entry-card">
+    <div class="mdl-card__title">
+        {% block card_title %}{% endblock %}
+    </div>
+    <div class="mdl-card__supporting-text">
+        {% block card_content %}{% endblock %}
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        {% block card_actions %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
