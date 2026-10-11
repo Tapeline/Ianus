@@ -7,12 +7,50 @@ kotlin = "2.2.0"
 kotlinxDatetime = "0.6.2"
 kotlinxSerializationJSON = "1.8.1"
 kotlinxCoroutines = "1.10.2"
+springBoot = "4.1.1"
+springDependencyManagement = "1.1.6"
+openapiProcessorPlugin = "2026.2"
+openapiProcessorSpring = "2026.3.2"
+jte = "3.2.4"
+foojayResolver = "0.8.0"
+nimbusJoseJwt = "10.0.2"
+springSecurityCrypto = "6.4.5"
+kotlinLoggingJvm = "7.0.3"
+liquibase = "4.27.0"
+snakeyaml = "2.2"
+validationApi = "2.0.1.Final"
+bouncycastle = "1.78.1"
+kotest = "6.0.7"
 
 [libraries]
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJSON" }
 kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web" }
+springBootStarterDataJdbc = { module = "org.springframework.boot:spring-boot-starter-data-jdbc" }
+springBootStarterValidation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+springBootStarterSecurity = { module = "org.springframework.boot:spring-boot-starter-security" }
+springBootStarterMail = { module = "org.springframework.boot:spring-boot-starter-mail" }
+springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+nimbusJoseJwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbusJoseJwt" }
+springSecurityCrypto = { module = "org.springframework.security:spring-security-crypto", version.ref = "springSecurityCrypto" }
+kotlinLoggingJvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLoggingJvm" }
+liquibaseCore = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+validationApi = { module = "javax.validation:validation-api", version.ref = "validationApi" }
+bouncycastleBcprovJdk18on = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
+jteSpringBootStarter4 = { module = "gg.jte:jte-spring-boot-starter-4", version.ref = "jte" }
+jte = { module = "gg.jte:jte", version.ref = "jte" }
+openapiProcessorSpring = { module = "io.openapiprocessor:openapi-processor-spring", version.ref = "openapiProcessorSpring" }
+h2 = { module = "com.h2database:h2" }
+postgresql = { module = "org.postgresql:postgresql" }
+kotlinTestJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotestFrameworkEngine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
+kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+kotestRunnerJunit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 
 # Libraries can be bundled together for easier import
 [bundles]
@@ -20,3 +58,9 @@ kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutine
 
 [plugins]
 kotlinPluginSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+springBoot = { id = "org.springframework.boot", version.ref = "springBoot" }
+springDependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+openapiProcessor = { id = "io.openapiprocessor.openapi-processor", version.ref = "openapiProcessorPlugin" }
+jte = { id = "gg.jte.gradle", version.ref = "jte" }
+foojayResolverConvention = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojayResolver" }

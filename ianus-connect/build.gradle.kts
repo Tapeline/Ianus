@@ -1,12 +1,12 @@
 plugins {
-    `kotlin-dsl`
+    alias(libs.plugins.kotlinJvm)
 }
 
 dependencies {
 
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2)
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_2)
@@ -15,10 +15,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-configurations {
-    runtimeClasspath {
-        exclude(group = "org.gradle.internal.logging.slf4j", module = "gradle-api")
-    }
 }

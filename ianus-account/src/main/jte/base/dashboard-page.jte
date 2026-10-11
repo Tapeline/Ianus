@@ -6,7 +6,7 @@
 @param Content extendScripts = null
 
 @template.base.page(
-    title = title,
+title = title,
 body = @`
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
