@@ -13,4 +13,7 @@ plugins {
 
 rootProject.name = "Ianus"
 
-include(":app")
+include(":ianus-shared")
+include(":ianus-account")
+include(":ianus-connect")
+include(":ianus-start")
