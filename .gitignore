@@ -3,7 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-**/generated/**
+**/jte-classes/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -16,9 +16,19 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.idea/dataSources
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/project.xml
+.idea/vcs.xml
+.idea/data_source_mapping.xml
+.idea/dictionaries
 
 ### Kotlin ###
 .kotlin
+kotlin-debugger-all.jar
 
 ### Eclipse ###
 .apt_generated
