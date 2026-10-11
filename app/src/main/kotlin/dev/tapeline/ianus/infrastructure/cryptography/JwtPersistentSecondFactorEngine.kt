@@ -30,7 +30,7 @@ class JwtPersistentSecondFactorEngine(
         val claims = JWTClaimsSet.Builder()
             .issueTime(Date.from(secondFactor.issuedAt))
             .expirationTime(Date.from(secondFactor.expiresAt))
-            .claim(USER_ID_CLAIM, secondFactor.userId)
+            .claim(USER_ID_CLAIM, secondFactor.userId.value)
             .build()
         val signedJWT = SignedJWT(JWSHeader(JWSAlgorithm.HS256), claims)
         signedJWT.sign(MACSigner(twoFactorConfig.signingKey))

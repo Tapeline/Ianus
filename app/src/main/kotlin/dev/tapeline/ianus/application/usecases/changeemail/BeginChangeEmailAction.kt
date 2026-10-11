@@ -39,7 +39,7 @@ class BeginChangeEmailAction(
 
     operator fun invoke(dto: BeginChangeEmailDTO) = tx {
         withSignedUser { user ->
-            issueAndSendCodeViaEmail(user, dto.origin, ::composeEmailChangeEmail)
+            issueAndSendCodeViaEmail(user, dto.email.value, dto.origin, ::composeEmailChangeEmail)
                 .let(::BeginChangeEmailResult)
         }
     }

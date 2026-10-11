@@ -35,6 +35,14 @@ ${body}
             body: JSON.stringify(body),
         })
     }
+    function callPutApi(url, body) {
+        return fetch(url, {
+            method: "PUT",
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        })
+    }
     function callGetApi(url) {
         return fetch(url, {
             method: "GET",

@@ -7,7 +7,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":shared"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.nimbusds:nimbus-jose-jwt:10.0.2")
     implementation("org.springframework.security:spring-security-crypto:6.4.5")

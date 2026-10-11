@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.sql.DataSource
 
-
 @Configuration
-open class LiquibaseConfiguration {
+open class SpringLiquibaseConfiguration {
+
     @Bean
     open fun liquibase(dataSource: DataSource?): SpringLiquibase {
         val liquibase = SpringLiquibase()
@@ -15,4 +15,5 @@ open class LiquibaseConfiguration {
         liquibase.setDataSource(dataSource)
         return liquibase
     }
+
 }

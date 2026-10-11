@@ -1,11 +1,10 @@
 package dev.tapeline.ianus.bootstrap
 
-import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.resource.VersionResourceResolver
 
-open class VersionedConfiguration : WebMvcConfigurer {
+open class SpringVersionedStaticFilesConfiguration : WebMvcConfigurer {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/static/**")

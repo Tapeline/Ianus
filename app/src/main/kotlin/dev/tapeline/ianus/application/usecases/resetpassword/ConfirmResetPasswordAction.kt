@@ -33,7 +33,7 @@ class ConfirmResetPasswordAction(
         withValidKeyClaims(dto.code) { claims ->
             users.getUser(claims.userId)
                 ?.apply { changePassword(hash.hash(dto.newRawPassword)) }
-                ?.also { users::saveUser }
+                ?.also(users::saveUser)
                 ?: throw Invalid2FACodeException()
         }
     }

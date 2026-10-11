@@ -41,8 +41,8 @@ class JweTwoFactorVerificationEngine(
         val claims = JWTClaimsSet.Builder()
             .issueTime(Date.from(claims.issuedAt))
             .expirationTime(Date.from(claims.expiresAt))
-            .claim(USER_ID_CLAIM, claims.userId)
-            .claim(ORIGIN_CLAIM, claims.loginOrigin)
+            .claim(USER_ID_CLAIM, claims.userId.value)
+            .claim(ORIGIN_CLAIM, claims.loginOrigin.value)
             .claim(CODE_CLAIM, code)  // TODO: replace with hash
             .build()
 

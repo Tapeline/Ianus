@@ -9,20 +9,21 @@ spring:
     enabled: true
     change-log: classpath:/migrations/master.yml
 
-  mail:
-    host: localhost
-    port: 1025
-    username: ""
-    password: ""
-
 app:
-  email-sender: smtp
+  mail:
+    backend: smtp
+    config:
+      host: localhost
+      port: 1025
+      username: ""
+      password: ""
+      authenticate: false
 
   2fa:
     verificationTtl: 5m
     persistentTtl: 1h
-    signingKey: changeme
-    encryptionKey: changeme
+    signingKey: changemechangemechangemechangeme
+    encryptionKey: changemechangemechangemechangeme
 
   sessions:
     minSessionTtl: 10m

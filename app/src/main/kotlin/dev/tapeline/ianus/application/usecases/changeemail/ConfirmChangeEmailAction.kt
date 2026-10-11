@@ -39,7 +39,7 @@ class ConfirmChangeEmailAction(
         withSignedUser { user ->
             withValidKeyClaims(user.id, dto.code) {
                 user.changeEmail(dto.email)
-                    .also { users::saveUser }
+                    .also(users::saveUser)
                     .let { ConfirmChangeEmailResult(dto.email) }
             }
         }

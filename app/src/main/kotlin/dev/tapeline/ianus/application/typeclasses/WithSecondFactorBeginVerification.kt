@@ -19,10 +19,15 @@ interface WithSecondFactorBeginVerification {
 }
 
 fun WithSecondFactorBeginVerification.issueAndSendCodeViaEmail(
-    user: User, origin: SessionOrigin, emailComposer: (String, String) -> EmailMessage
+    user: User, email: String, origin: SessionOrigin, emailComposer: (String, String) -> EmailMessage
 ) =
     twoFactorVerificationEngine.createTwoFactorPair(
         TwoFactorKeyClaims(user.id, origin, clock.now(), twoFactorConfig.verificationTtl)
     )
-        .also { (code, _) -> emailSender.sendEmail(emailComposer(user.email!!.value, code.value)) }
+        .also { (code, _) -> emailSender.sendEmail(emailComposer(email, code.value)) }
         .let { (_, key) -> key }
+
+fun WithSecondFactorBeginVerification.issueAndSendCodeViaEmail(
+    user: User, origin: SessionOrigin, emailComposer: (String, String) -> EmailMessage
+) =
+    issueAndSendCodeViaEmail(user, user.email!!.value, origin, emailComposer)
