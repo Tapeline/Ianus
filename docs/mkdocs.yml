@@ -1,0 +1,148 @@
+site_name: Ianus docs
+repo_url: https://github.com/Tapeline/Ianus
+copyright: "&copy; Copyright Tapeline 2026-2027"
+nav:
+  - Home: index.md
+  - Explore:
+      - Features: explore/features.md
+      - Demo: explore/demo.md
+      - Monitoring: explore/monitoring.md
+      - Tech stack: explore/stack.md
+      - C4: explore/c4.md
+  - Getting started:
+      - For contestants:
+          - Sign up for a contest: get_started/contestant/sign_up.md
+          - Solve tasks: get_started/contestant/solve.md
+      - For admins:
+          - Install: get_started/admin/install.md
+          - Set up a contest: get_started/admin/contest.md
+          - Set up a quiz task: get_started/admin/quiz.md
+          - Set up a code task: get_started/admin/code.md
+  - Reference:
+      - Common: reference/common.md
+      - Glossary: reference/glossary.md
+      - Contests:
+          - Structure: reference/contests/structure.md
+          - Session: reference/contests/session.md
+          - Permissions: reference/contests/permissions.md
+          - Scores & standings: reference/contests/scores.md
+      - Pages & tasks:
+          - Text pages: reference/pages/text.md
+          - Quiz tasks: reference/pages/quiz.md
+          - Code tasks: reference/pages/code.md
+      - Checking:
+          - Solutions: reference/checking/solutions.md
+          - Quiz validators declaration: reference/checking/quiz.md
+          - Code test suites declaration: reference/checking/code.md
+          - Running test suites: reference/checking/running_suites.md
+          - Verdicts: reference/checking/verdicts.md
+  - Services:
+      - Account service:
+          - Description: services/account/description.md
+          - Configuration: services/account/config.md
+          - OpenAPI: services/account/openapi.md
+      - Contest service:
+          - Description: services/contest/description.md
+          - Configuration: services/contest/config.md
+          - OpenAPI: services/contest/openapi.md
+      - Solution service:
+          - Description: services/solution/description.md
+          - Configuration: services/solution/config.md
+          - OpenAPI: services/solution/openapi.md
+      - Judge service:
+          - Description: services/judge/description.md
+          - Configuration: services/judge/config.md
+      - Judgelet:
+          - Description: services/judgelet/description.md
+          - Security: services/judgelet/security.md
+          - Configuration: services/judgelet/config.md
+          - OpenAPI: services/judgelet/openapi.md
+      - Monitoring:
+          - Overview: services/monitoring/overview.md
+          - Grafana: services/monitoring/grafana.md
+          - Loki: services/monitoring/loki.md
+          - Prometheus: services/monitoring/prometheus.md
+          - Promtail: services/monitoring/promtail.md
+      - Frontend:
+          - Description: services/frontend/description.md
+          - Configuration: services/frontend/config.md
+  - Contributing:
+      - How to contribute: contributing/howto.md
+      - Codebase structure: contributing/structure.md
+      - Contributing to documentation: contributing/documentation.md
+      - AI usage: contributing/ai.md
+theme:
+  name: material2014
+  primary_color: "#2F24C1"
+  section_color:
+    Getting started: "#558B2F"
+    Reference: "#009688"
+    Services: "#9C27B0"
+    Contributing: "#E65100"
+
+plugins:
+  - mermaid2
+  - ezglossary:
+      ignore_case: true
+      tooltip: full
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - macros:
+      module_name: macros
+  - mkdocstrings:
+      handlers:
+        python:
+          load_external_modules: true
+          paths:
+            - ../AccountService
+            - ../ContestService
+            - ../SolutionService/src
+            - ../JudgeService/src
+            - ../JudgeUnit/src
+          import:
+            - https://docs.python.org/3/objects.inv
+          options:
+            filters:
+              - '!^_'
+            #show_root_heading: true
+            show_if_no_docstring: true
+            inherited_members: true
+            members_order: source
+            separate_signature: true
+            unwrap_annotated: true
+            merge_init_into_class: true
+            docstring_section_style: spacy
+            signature_crossrefs: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            line_length: 79
+
+
+markdown_extensions:
+  - toc:
+      toc_depth: 3
+  - extra
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html
+  - def_list
+  - material2014.extensions.tabbed
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - mdx_include
