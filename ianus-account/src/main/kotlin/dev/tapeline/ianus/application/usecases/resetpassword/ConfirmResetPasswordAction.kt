@@ -1,7 +1,7 @@
 package dev.tapeline.ianus.application.usecases.resetpassword
 
 import dev.tapeline.ianus.application.exceptions.Invalid2FACodeException
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.algorithms.PasswordHashEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
 import dev.tapeline.ianus.application.interfaces.environment.SecondFactorEnvironment

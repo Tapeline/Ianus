@@ -16,7 +16,8 @@ tags:
     externalDocs:
       description: as per OIDC Core Errata 2
       url: https://openid.net/specs/openid-connect-core-1_0.html
-
+  - name: Authorise & consent
+    description: Various Ianus-specific user consent and app authorisation endpoints
 
 
 paths:
@@ -66,9 +67,25 @@ paths:
           description: String value used to associate a Client session with an ID Token
       responses:
         '302':
-          description: Redirects to the `redirect_uri` with an authorization code or error.
+          description: |
+            Redirects to the consent screen with an authorization intention or error.
+            
+            Query params to redirection:
+            - `intent` - JWT/JWE packed with everything about the authorisation about to be performed
+            - `appName` - name of the app that tries to authorise the action, for frontend usage
+            - `scopes` - scopes about to be granted, for frontend usage
         '400':
-          description: Invalid request parameters.
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
     post:
       summary: OAuth2.0 compliant Authorization Endpoint
@@ -85,9 +102,25 @@ paths:
               $ref: "#/components/schemas/OAuthAuthorizeRequest"
       responses:
         '302':
-          description: Redirects to the `redirect_uri` with an authorization code or error.
+          description: |
+            Redirects to the consent screen with an authorization intention or error.
+            
+            Query params to redirection:
+            - `intent` - JWT/JWE packed with everything about the authorisation about to be performed
+            - `appName` - name of the app that tries to authorise the action, for frontend usage
+            - `scopes` - scopes about to be granted, for frontend usage
         '400':
-          description: Invalid request parameters.
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /api/v1/oauth2/token:
     post:
@@ -95,7 +128,7 @@ paths:
       description: Exchange an authorization code or refresh token for access, ID, and refresh tokens.
       tags: [ OAuth 2.0 ]
       security:
-        - BasicAuth: [ ]
+        - relyingPartyAuth: [ ]
       requestBody:
         required: true
         content:
@@ -137,7 +170,7 @@ paths:
       description: Returns identity claims about the authenticated user based on the granted access token scopes.
       tags: [ OpenID Connect 1.0 ]
       security:
-        - BearerAuth: [ ]
+        - grantedAccessTokenAuth: [ ]
       responses:
         '200':
           description: User claims profile data.
@@ -173,50 +206,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OidConfig"
+
+  /api/v1/connect/authorize:
+    post:
+      summary: Perform authorisation by intent
+      tags: [ Authorise & consent ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthoriseRequest"
+      responses:
+        '302':
+          description: Granted access, redirects to RP's `redirect_uri`
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   securitySchemes:
-    BasicAuth:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: SESSIONID
+      description: Regular user's browser authentication.
+    relyingPartyAuth:
       type: http
       scheme: basic
       description: Client ID and Client Secret authentication.
-    BearerAuth:
+    grantedAccessTokenAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Bearer Access Token validation.
+      description: Granted access token authentication.
   schemas:
-    OAuthTokenRequest:
+    AuthoriseRequest:
       type: object
       nullable: false
       required:
-        - grant_type
+        - intent
       properties:
-        grant_type:
+        intent:
           type: string
-          enum: [ authorization_code, refresh_token ]
-          description: The method used to request the token.
+          minLength: 1
+          description: The RP's intent about to be authorised
           nullable: false
-        code:
-          type: string
-          description: Required if grant_type is `authorization_code`. The code received from the `/authorize` endpoint.
-          nullable: false
-        redirect_uri:
-          type: string
-          format: uri
-          description: Required if grant_type is `authorization_code`. Must exactly match the redirect_uri sent to `/authorize`.
-          nullable: false
-        refresh_token:
-          type: string
-          description: Required if grant_type is `refresh_token`. The token used to obtain a renewed access token.
-          nullable: false
-        client_id:
-          type: string
-          description: Required only if the client cannot use HTTP Basic Auth for credentials.
-          nullable: false
-        client_secret:
-          type: string
-          description: Required only if using form-based client authentication.
-          nullable: false
+
     OAuthTokenResponse:
       type: object
       nullable: false
@@ -249,6 +294,41 @@ components:
           type: string
           description: The scopes approved for this access token.
           nullable: false
+
+    OAuthTokenRequest:
+      type: object
+      nullable: false
+      required:
+        - grant_type
+      properties:
+        grant_type:
+          type: string
+          enum: [ "authorization_code", "refresh_token", "urn:ietf:params:oauth:grant-type:device_code" ]
+          description: The method used to request the token.
+          nullable: false
+        code:
+          type: string
+          description: Required if grant_type is `authorization_code`. The code received from the `/authorize` endpoint.
+          nullable: false
+        redirect_uri:
+          type: string
+          format: uri
+          description: Required if grant_type is `authorization_code`. Must exactly match the redirect_uri sent to `/authorize`.
+          nullable: false
+        refresh_token:
+          type: string
+          description: Required if grant_type is `refresh_token`. The token used to obtain a renewed access token.
+          nullable: false
+        client_id:
+          type: string
+          description: Required only if the client cannot use HTTP Basic Auth for credentials.
+          nullable: false
+        client_secret:
+          type: string
+          description: Required only if using form-based client authentication.
+          nullable: false
+
+
     OAuthUserInfoResponse:
       type: object
       required:
@@ -353,6 +433,24 @@ components:
         error_description:
           type: string
           description: Human-readable error description explaining the diagnostic root.
+    ErrorResponse:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          description: Machine readable error code
+          example: "UNAUTHORISED"
+          minLength: 1
+          nullable: false
+        message:
+          type: string
+          description: Human readable error description
+          example: "Cannot perform this action"
+          minLength: 1
+          nullable: false
     OidConfig:
       type: object
       required:
@@ -381,8 +479,8 @@ components:
           format: uri
         scopes_supported:
           type: array
-        items:
-          type: string
+          items:
+            type: string
         response_types_supported:
           type: array
           items:

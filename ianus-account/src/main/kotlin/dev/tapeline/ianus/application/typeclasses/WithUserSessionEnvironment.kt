@@ -1,7 +1,7 @@
 package dev.tapeline.ianus.application.typeclasses
 
 import dev.tapeline.ianus.application.exceptions.UnauthenticatedException
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage

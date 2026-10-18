@@ -4,7 +4,10 @@ import dev.tapeline.ianus.application.exceptions.InvalidCredentialsException
 import dev.tapeline.ianus.application.typeclasses.WithSecondFactorBeginVerification
 import dev.tapeline.ianus.application.typeclasses.issueAndSendCodeViaEmail
 import dev.tapeline.ianus.application.interfaces.*
+import dev.tapeline.ianus.application.interfaces.algorithms.SecureCodeEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
+import dev.tapeline.ianus.application.interfaces.environment.Clock
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.email.composePasswordRecoveryEmail
@@ -31,7 +34,8 @@ class BeginResetPasswordAction(
     override val twoFactorVerificationEngine: TwoFactorVerificationEngine,
     override val emailSender: EmailSender,
     override val clock: Clock,
-    override val twoFactorConfig: TwoFactorConfiguration
+    override val twoFactorConfig: TwoFactorConfiguration,
+    override val secureCodeEngine: SecureCodeEngine
 ) : WithSecondFactorBeginVerification {
 
     operator fun invoke(dto: BeginResetPasswordDTO) = tx {

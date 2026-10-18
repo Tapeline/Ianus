@@ -8,7 +8,15 @@ dependencies {
     implementation(project(":ianus-shared"))
     implementation(project(":ianus-account"))
     implementation(project(":ianus-connect"))
+    implementation(project(":ianus-frontend"))
     implementation(libs.springBootStarterWeb)
+    implementation(libs.springBootStarterDataJdbc)
+    implementation(libs.springBootStarterSecurity)
+    implementation(libs.jteSpringBootStarter4)
+    implementation(libs.jte)
+    runtimeOnly(libs.h2)
+    runtimeOnly(libs.postgresql)
+    implementation(libs.liquibaseCore)
 }
 
 tasks.withType<Test>().configureEach {

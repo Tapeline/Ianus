@@ -16,4 +16,5 @@ rootProject.name = "Ianus"
 include(":ianus-shared")
 include(":ianus-account")
 include(":ianus-connect")
+include(":ianus-frontend")
 include(":ianus-start")

@@ -7,20 +7,21 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":ianus-shared"))
     implementation(libs.springBootStarterWeb)
     implementation(libs.nimbusJoseJwt)
     implementation(libs.springSecurityCrypto)
+    implementation(libs.bouncycastleBcprovJdk18on)
     implementation(libs.springBootStarterDataJdbc)
     implementation(libs.kotlinLoggingJvm)
     runtimeOnly(libs.h2)
     runtimeOnly(libs.postgresql)
-    compileOnly(libs.openapiProcessorSpring)
     implementation(libs.liquibaseCore)
+    compileOnly(libs.openapiProcessorSpring)
     implementation(libs.snakeyaml)
     implementation(libs.springBootStarterValidation)
     implementation(libs.validationApi)
     implementation(libs.springBootStarterSecurity)
-    implementation(libs.bouncycastleBcprovJdk18on)
     implementation(libs.jteSpringBootStarter4)
     implementation(libs.jte)
     implementation(libs.springBootStarterMail)

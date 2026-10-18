@@ -12,7 +12,6 @@ import dev.tapeline.ianus.domain.twofactor.TwoFactorKeyClaims
 interface TwoFactorVerificationEngine {
 
     fun createTwoFactorPair(claims: TwoFactorKeyClaims): Pair<TwoFactorCode, TwoFactorKey>
-    fun twoFactorCodeValid(code: TwoFactorCode, key: TwoFactorKey): Boolean
     fun extractClaims(key: TwoFactorKey): TwoFactorKeyClaims
 
 }

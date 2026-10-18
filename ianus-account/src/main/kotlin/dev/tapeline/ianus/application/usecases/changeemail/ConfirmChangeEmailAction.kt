@@ -1,7 +1,7 @@
 package dev.tapeline.ianus.application.usecases.changeemail
 
-import dev.tapeline.ianus.application.interfaces.Clock
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.environment.Clock
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
 import dev.tapeline.ianus.application.interfaces.environment.SecondFactorEnvironment
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment

@@ -1,17 +1,20 @@
 package dev.tapeline.ianus.application.typeclasses
 
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
 import dev.tapeline.ianus.application.interfaces.EmailSender
+import dev.tapeline.ianus.application.interfaces.algorithms.SecureCodeEngine
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.EmailMessage
 import dev.tapeline.ianus.domain.session.SessionOrigin
+import dev.tapeline.ianus.domain.twofactor.TwoFactorCode
 import dev.tapeline.ianus.domain.twofactor.TwoFactorKeyClaims
 import dev.tapeline.ianus.domain.user.User
 
 interface WithSecondFactorBeginVerification {
 
     val twoFactorVerificationEngine: TwoFactorVerificationEngine
+    val secureCodeEngine: SecureCodeEngine
     val emailSender: EmailSender
     val clock: Clock
     val twoFactorConfig: TwoFactorConfiguration
@@ -22,7 +25,13 @@ fun WithSecondFactorBeginVerification.issueAndSendCodeViaEmail(
     user: User, email: String, origin: SessionOrigin, emailComposer: (String, String) -> EmailMessage
 ) =
     twoFactorVerificationEngine.createTwoFactorPair(
-        TwoFactorKeyClaims(user.id, origin, clock.now(), twoFactorConfig.verificationTtl)
+        TwoFactorKeyClaims(
+            user.id,
+            origin,
+            clock.now(),
+            twoFactorConfig.verificationTtl,
+            TwoFactorCode(secureCodeEngine.generateRandom6DigitCode())
+        )
     )
         .also { (code, _) -> emailSender.sendEmail(emailComposer(email, code.value)) }
         .let { (_, key) -> key }

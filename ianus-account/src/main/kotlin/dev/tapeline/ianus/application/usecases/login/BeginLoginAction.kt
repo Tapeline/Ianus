@@ -5,11 +5,11 @@ import dev.tapeline.ianus.application.typeclasses.WithSecondFactorBeginVerificat
 import dev.tapeline.ianus.application.typeclasses.WithSessionCreation
 import dev.tapeline.ianus.application.typeclasses.createSession
 import dev.tapeline.ianus.application.typeclasses.issueAndSendCodeViaEmail
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.algorithms.PasswordHashEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.SecureKeyEngine
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage
 import dev.tapeline.ianus.domain.session.SessionId
@@ -19,6 +19,7 @@ import dev.tapeline.ianus.domain.twofactor.TwoFactorKey
 import dev.tapeline.ianus.domain.user.UserId
 import dev.tapeline.ianus.domain.user.Username
 import dev.tapeline.ianus.application.interfaces.EmailSender
+import dev.tapeline.ianus.application.interfaces.algorithms.SecureCodeEngine
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.email.compose2FAEmail
 import dev.tapeline.ianus.domain.session.SessionToken
@@ -57,7 +58,8 @@ class BeginLoginAction(
     override val clock: Clock,
     override val twoFactorVerificationEngine: TwoFactorVerificationEngine,
     override val emailSender: EmailSender,
-    override val twoFactorConfig: TwoFactorConfiguration
+    override val twoFactorConfig: TwoFactorConfiguration,
+    override val secureCodeEngine: SecureCodeEngine
 ) : WithSecondFactorBeginVerification, WithSessionCreation {
     operator fun invoke(dto: LoginDTO) = tx {
         users.getUser(dto.username)

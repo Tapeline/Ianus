@@ -5,9 +5,10 @@ import dev.tapeline.ianus.application.typeclasses.WithUserSessionEnvironment
 import dev.tapeline.ianus.application.typeclasses.issueAndSendCodeViaEmail
 import dev.tapeline.ianus.application.typeclasses.requireSession
 import dev.tapeline.ianus.application.typeclasses.withSignedUser
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.EmailSender
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
+import dev.tapeline.ianus.application.interfaces.algorithms.SecureCodeEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
@@ -30,7 +31,8 @@ class RequestGenericSecondFactorBeginAction(
     override val twoFactorVerificationEngine: TwoFactorVerificationEngine,
     override val emailSender: EmailSender,
     override val twoFactorConfig: TwoFactorConfiguration,
-    val tx: Transaction
+    val tx: Transaction,
+    override val secureCodeEngine: SecureCodeEngine
 ) : WithUserSessionEnvironment, WithSecondFactorBeginVerification {
 
     operator fun invoke() = tx {

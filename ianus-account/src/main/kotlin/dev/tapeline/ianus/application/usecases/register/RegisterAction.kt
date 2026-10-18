@@ -2,8 +2,8 @@ package dev.tapeline.ianus.application.usecases.register
 
 import dev.tapeline.ianus.application.exceptions.RegistrationDisabledException
 import dev.tapeline.ianus.application.exceptions.UserAlreadyExistsException
-import dev.tapeline.ianus.application.interfaces.Clock
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.environment.Clock
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.algorithms.PasswordHashEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.SecureKeyEngine
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
@@ -18,7 +18,7 @@ import dev.tapeline.ianus.domain.session.SessionId
 import dev.tapeline.ianus.domain.session.SessionOrigin
 import dev.tapeline.ianus.domain.session.SessionToken
 import dev.tapeline.ianus.domain.twofactor.TwoFactorConfig
-import dev.tapeline.ianus.domain.user.HashedPassword
+import dev.tapeline.ianus.domain.HashedPassword
 import dev.tapeline.ianus.domain.user.User
 import dev.tapeline.ianus.domain.user.UserId
 import dev.tapeline.ianus.domain.user.Username

@@ -1,6 +1,6 @@
 package dev.tapeline.ianus.application.typeclasses
 
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.algorithms.SecureKeyEngine
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
 import dev.tapeline.ianus.common.newId

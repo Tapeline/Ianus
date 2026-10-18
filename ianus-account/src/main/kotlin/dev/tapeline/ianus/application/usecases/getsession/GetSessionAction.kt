@@ -1,8 +1,8 @@
 package dev.tapeline.ianus.application.usecases.getsession
 
 import dev.tapeline.ianus.application.exceptions.NotFoundException
-import dev.tapeline.ianus.application.interfaces.Clock
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.environment.Clock
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage

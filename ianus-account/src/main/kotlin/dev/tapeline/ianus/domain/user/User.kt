@@ -1,5 +1,6 @@
 package dev.tapeline.ianus.domain.user
 
+import dev.tapeline.ianus.domain.HashedPassword
 import dev.tapeline.ianus.domain.twofactor.TwoFactorConfig
 import java.time.Duration
 

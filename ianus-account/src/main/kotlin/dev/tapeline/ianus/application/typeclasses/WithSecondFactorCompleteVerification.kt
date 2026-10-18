@@ -31,9 +31,9 @@ fun <R> WithSecondFactorCompleteVerification.withValidKeyClaims(
 ) =
     secondFactorEnvironment.getTwoFactorKey()
         ?.let { key ->
-            if (!twoFactorVerificationEngine.twoFactorCodeValid(code, key))
-                throw Invalid2FACodeException()
             val claims = twoFactorVerificationEngine.extractClaims(key)
+            if (claims.code != code)
+                throw Invalid2FACodeException()
             block(claims)
         }
         ?: throw Invalid2FACodeException()

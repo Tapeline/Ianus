@@ -4,7 +4,7 @@ import dev.tapeline.ianus.application.exceptions.UserAlreadyExistsException
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage
 import dev.tapeline.ianus.domain.twofactor.TwoFactorConfig
 import dev.tapeline.ianus.domain.user.Email
-import dev.tapeline.ianus.domain.user.HashedPassword
+import dev.tapeline.ianus.domain.HashedPassword
 import dev.tapeline.ianus.domain.user.User
 import dev.tapeline.ianus.domain.user.UserId
 import dev.tapeline.ianus.domain.user.Username

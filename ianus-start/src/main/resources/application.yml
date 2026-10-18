@@ -19,6 +19,13 @@ app:
       password: ""
       authenticate: false
 
+  db:
+    jdbcUrl: "jdbc:postgresql://localhost:5432/ianus"
+    username: dbaas
+    password: dbaas
+    pool-size: 30
+
+account:
   2fa:
     verificationTtl: 5m
     persistentTtl: 1h
@@ -35,20 +42,30 @@ app:
     minPasswordLength: 8
     enabled: true
 
-  db:
-    jdbcUrl: "jdbc:postgresql://localhost:5432/ianus"
-    username: dbaas
-    password: dbaas
-    pool-size: 30
+connect:
+  apps:
+    - id: myclient1
+      name: Test OIDC client
+      secret: djhdfsdkhjfgsdjfkghsdfg
+      scopes:
+        - openid
+  intent:
+    ttl: 5m
+  authorisationCode:
+    ttl: 5m
+  token:
+    accessTokenLengthBytes: 128
+    refreshTokenLengthBytes: 128
+    accessTokenTtl: 24h
 
 logging:
   level:
     # org.springframework.security: TRACE
-    # org.springframework.web: DEBUG
-    # org.springframework.boot.autoconfigure: DEBUG
-    # org.springframework.web.servlet.DispatcherServlet: TRACE
-    # org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
-    # org.springframework.web.servlet.view: TRACE
+    org.springframework.web: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: TRACE
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+    org.springframework.web.servlet.view: TRACE
 gg:
   jte:
     developmentMode: true

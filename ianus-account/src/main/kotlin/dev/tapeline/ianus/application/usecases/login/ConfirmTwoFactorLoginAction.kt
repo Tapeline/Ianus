@@ -5,8 +5,8 @@ import dev.tapeline.ianus.application.typeclasses.WithSecondFactorPersistence
 import dev.tapeline.ianus.application.typeclasses.WithSessionCreation
 import dev.tapeline.ianus.application.typeclasses.createPersistentSecondFactor
 import dev.tapeline.ianus.application.typeclasses.createSession
-import dev.tapeline.ianus.application.interfaces.Clock
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.environment.Clock
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.algorithms.PersistentSecondFactorEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.SecureKeyEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine

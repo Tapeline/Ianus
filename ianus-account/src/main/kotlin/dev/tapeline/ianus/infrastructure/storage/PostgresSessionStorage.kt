@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Component
 import java.time.Duration
-import java.time.Instant
 import java.sql.Timestamp
 
 private val logger = KotlinLogging.logger {}
@@ -74,7 +73,7 @@ class PostgresSessionStorage(
         jdbcTemplate.update(
             """
                 DELETE FROM $TABLE_SESSIONS 
-                WHERE $COL_ID = :id
+                WHERE $COL_ID = :id;
             """.trimIndent(),
             mapOf("id" to sessionId.value)
         ).let {}

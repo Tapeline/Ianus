@@ -37,7 +37,7 @@ class SessionsController(
             .to200OK()
 
     override fun deleteApiV1MySessionsSessionId(sessionId: @NotNull String) =
-        revokeSessionActionProvider.getObject(SessionId(sessionId))
+        revokeSessionActionProvider.getObject()(SessionId(sessionId))
             .to204NoContent()
 
 }

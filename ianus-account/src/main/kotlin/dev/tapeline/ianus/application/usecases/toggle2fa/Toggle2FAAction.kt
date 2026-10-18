@@ -1,12 +1,12 @@
 package dev.tapeline.ianus.application.usecases.toggle2fa
 
 import dev.tapeline.ianus.application.exceptions.EmailNotSetUpException
-import dev.tapeline.ianus.application.interfaces.Transaction
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage
 import dev.tapeline.ianus.application.typeclasses.WithUserSessionEnvironment
 import dev.tapeline.ianus.application.typeclasses.withSignedUser
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
 import dev.tapeline.ianus.domain.twofactor.TwoFactorConfig
 import org.springframework.stereotype.Component
@@ -41,7 +41,7 @@ class Toggle2FAAction(
                     TwoFactorConfig.DISABLED
                 }
             )
-                .also { users::saveUser }
+                .also ( users::saveUser )
                 .let { Toggle2FAResult(dto.enable) }
         }
     }

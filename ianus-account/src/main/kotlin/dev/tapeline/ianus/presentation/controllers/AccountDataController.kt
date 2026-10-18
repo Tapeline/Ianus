@@ -8,6 +8,7 @@ import dev.tapeline.ianus.application.usecases.getmy.GetMyAccountAction
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.session.SessionOrigin
 import dev.tapeline.ianus.domain.twofactor.TwoFactorCode
+import dev.tapeline.ianus.domain.twofactor.TwoFactorConfig
 import dev.tapeline.ianus.domain.user.Email
 import dev.tapeline.ianus.presentation.SECOND_FACTOR_VERIFICATION_COOKIE
 import dev.tapeline.ianus.presentation.SET_COOKIE
@@ -32,7 +33,7 @@ class AccountDataController(
 
     override fun getApiV1My() =
         getMyAccountActionProvider.getObject()()
-            .run { MyAccountResponse(username.value, email?.value) }
+            .run { MyAccountResponse(username.value, email?.value, twoFactor != TwoFactorConfig.DISABLED) }
             .to200OK()
 
     override fun postApiV1MyEmailChange(

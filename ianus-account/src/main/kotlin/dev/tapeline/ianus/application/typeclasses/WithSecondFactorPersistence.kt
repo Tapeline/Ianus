@@ -1,6 +1,6 @@
 package dev.tapeline.ianus.application.typeclasses
 
-import dev.tapeline.ianus.application.interfaces.Clock
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.algorithms.PersistentSecondFactorEngine
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.twofactor.SecondFactor

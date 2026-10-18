@@ -2,12 +2,15 @@ package dev.tapeline.ianus.application.usecases.changeemail
 
 import dev.tapeline.ianus.application.typeclasses.WithSecondFactorBeginVerification
 import dev.tapeline.ianus.application.interfaces.*
+import dev.tapeline.ianus.application.interfaces.algorithms.SecureCodeEngine
 import dev.tapeline.ianus.application.interfaces.algorithms.TwoFactorVerificationEngine
+import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.environment.UserSessionEnvironment
 import dev.tapeline.ianus.application.typeclasses.WithUserSessionEnvironment
 import dev.tapeline.ianus.application.typeclasses.issueAndSendCodeViaEmail
 import dev.tapeline.ianus.application.typeclasses.withSignedUser
 import dev.tapeline.ianus.application.interfaces.persistence.SessionStorage
+import dev.tapeline.ianus.application.interfaces.persistence.Transaction
 import dev.tapeline.ianus.application.interfaces.persistence.UserStorage
 import dev.tapeline.ianus.configuration.TwoFactorConfiguration
 import dev.tapeline.ianus.domain.email.composeEmailChangeEmail
@@ -34,7 +37,8 @@ class BeginChangeEmailAction(
     override val userSessionEnvironment: UserSessionEnvironment,
     override val sessions: SessionStorage,
     override val clock: Clock,
-    override val twoFactorConfig: TwoFactorConfiguration
+    override val twoFactorConfig: TwoFactorConfiguration,
+    override val secureCodeEngine: SecureCodeEngine
 ) : WithUserSessionEnvironment, WithSecondFactorBeginVerification {
 
     operator fun invoke(dto: BeginChangeEmailDTO) = tx {

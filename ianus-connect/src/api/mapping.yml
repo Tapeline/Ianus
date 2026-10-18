@@ -4,6 +4,7 @@ options:
   package-name: dev.tapeline.ianus.presentation.openapi
   model-type: record
   bean-validation: true
+  one-of-interface: true
 
 map:
   result: org.springframework.http.ResponseEntity

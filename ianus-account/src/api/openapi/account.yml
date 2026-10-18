@@ -585,6 +585,7 @@ components:
       required:
         - username
         - email
+        - 2fa_enabled
       properties:
         username:
           type: string
@@ -594,6 +595,9 @@ components:
           type: string
           nullable: true
           minLength: 1
+        2fa_enabled:
+          type: boolean
+          nullable: false
 
     BeginEmailChangeRequest:
       type: object
