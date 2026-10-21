@@ -35,8 +35,7 @@ class GetOauthToken(
     private val clock: Clock,
     private val accessTokenConfig: AccessTokenConfiguration,
     private val tx: Transaction,
-    private val userFetcher: UserFetcher,
-    override val accessGrantRepository: AccessGrantRepository,
+    override val accessGrants: AccessGrantRepository,
     override val secureKeyGenerator: SecureAccessKeysEngine,
 ) : WithAppAuthenticationEnvironment, WithAccessCreation {
 

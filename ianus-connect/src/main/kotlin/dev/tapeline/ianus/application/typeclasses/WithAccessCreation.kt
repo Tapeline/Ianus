@@ -15,7 +15,7 @@ import java.time.Instant
 
 interface WithAccessCreation {
 
-    val accessGrantRepository: AccessGrantRepository
+    val accessGrants: AccessGrantRepository
     val secureKeyGenerator: SecureAccessKeysEngine
 
 }
@@ -37,3 +37,4 @@ fun WithAccessCreation.createAccessGrant(
         ttl = ttl,
         refreshToken = secureKeyGenerator.generateRefreshKey().let(::AccessRefreshToken)
     )
+        .also(accessGrants::createGrant)

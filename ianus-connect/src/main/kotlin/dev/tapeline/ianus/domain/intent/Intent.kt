@@ -10,7 +10,7 @@ data class Intent(
     val scopes: Set<Scope>,
     val includeUserInfo: Boolean,
     val redirectUri: URI,
-    val state: String,
+    val state: String?,
     val issuedAt: Instant,
     val expiresAt: Instant,
 )

@@ -22,7 +22,7 @@ data class BeginOauthAuthorisationDTO(
     val scopes: Set<Scope>,
     val includeUserInfo: Boolean,
     val redirectUri: URI,
-    val state: String
+    val state: String?
 )
 
 data class BeginOauthAuthorisationResult(

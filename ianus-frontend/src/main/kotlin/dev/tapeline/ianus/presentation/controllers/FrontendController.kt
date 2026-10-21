@@ -38,4 +38,7 @@ class FrontendController(
     @GetMapping("/my/apps")
     fun myAccountApps() = "pages/my/apps"
 
+    @GetMapping("/oauth/consent")
+    fun oauthConsent() = "pages/oauth/consent"
+
 }

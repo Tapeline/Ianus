@@ -9,8 +9,15 @@ import dev.tapeline.ianus.application.interfaces.algorithms.IntentEngine
 import dev.tapeline.ianus.application.typeclasses.WithUserAuthenticator
 import dev.tapeline.ianus.application.typeclasses.withSignedUser
 import dev.tapeline.ianus.configuration.AuthorisationCodeConfiguration
+import dev.tapeline.ianus.domain.authcode.AuthorisationCode
 import dev.tapeline.ianus.domain.authcode.AuthorisationCodeClaims
 import dev.tapeline.ianus.domain.intent.IntentToken
+import java.net.URI
+
+data class ConsentAuthorisationResult(
+    val authCode: AuthorisationCode,
+    val redirectUri: URI,
+)
 
 class ConsentAuthorisation(
     private val tx: Transaction,
@@ -27,15 +34,18 @@ class ConsentAuthorisation(
             if (now > intent.expiresAt) throw ExpiredIntentException()
             tx {
                 withSignedUser { user ->
-                    authorisationCodeEngine.createAuthorisationCode(
-                        AuthorisationCodeClaims(
-                            appId = intent.appId,
-                            scopes = intent.scopes,
-                            includeUserInfo = intent.includeUserInfo,
-                            userId = user.id,
-                            issuedAt = now,
-                            expiresAt = now + authorisationCodeConfig.ttl
-                        )
+                    ConsentAuthorisationResult(
+                        authorisationCodeEngine.createAuthorisationCode(
+                            AuthorisationCodeClaims(
+                                appId = intent.appId,
+                                scopes = intent.scopes,
+                                includeUserInfo = intent.includeUserInfo,
+                                userId = user.id,
+                                issuedAt = now,
+                                expiresAt = now + authorisationCodeConfig.ttl
+                            )
+                        ),
+                        intent.redirectUri
                     )
                 }
             }
