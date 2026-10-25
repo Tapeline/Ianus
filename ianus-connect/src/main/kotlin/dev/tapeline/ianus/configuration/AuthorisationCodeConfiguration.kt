@@ -5,5 +5,7 @@ import java.time.Duration
 
 @ConfigurationProperties(prefix = "connect.authorisation-code")
 data class AuthorisationCodeConfiguration(
-    val ttl: Duration
+    val ttl: Duration,
+    val signingKey: String,
+    val encryptionKey: String,
 )

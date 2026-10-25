@@ -9,7 +9,6 @@ import dev.tapeline.ianus.application.interfaces.environment.Clock
 import dev.tapeline.ianus.application.interfaces.persistence.AccessGrantRepository
 import dev.tapeline.ianus.application.interfaces.persistence.AppRepository
 import dev.tapeline.ianus.application.interfaces.persistence.Transaction
-import dev.tapeline.ianus.application.interfaces.persistence.UserFetcher
 import dev.tapeline.ianus.application.typeclasses.WithAccessCreation
 import dev.tapeline.ianus.application.typeclasses.WithAppAuthenticationEnvironment
 import dev.tapeline.ianus.application.typeclasses.createAccessGrant
@@ -17,7 +16,7 @@ import dev.tapeline.ianus.application.typeclasses.withSignedApp
 import dev.tapeline.ianus.configuration.AccessTokenConfiguration
 import dev.tapeline.ianus.domain.authcode.AuthorisationCode
 import dev.tapeline.ianus.domain.grant.AccessGrant
-import dev.tapeline.ianus.domain.user.UserPrincipal
+import org.springframework.stereotype.Component
 
 data class GetOauthTokenDTO(
     val code: AuthorisationCode
@@ -27,8 +26,8 @@ data class GetOauthTokenResult(
     val grant: AccessGrant
 )
 
-class GetOauthToken(
-    override val appAuthenticationEnvironment: AppAuthenticationEnvironment,
+@Component
+class GetOauthTokenAction(
     override val apps: AppRepository,
     override val passwordHashEngine: PasswordHashEngine,
     private val authorisationCodeEngine: AuthorisationCodeEngine,
@@ -38,6 +37,8 @@ class GetOauthToken(
     override val accessGrants: AccessGrantRepository,
     override val secureKeyGenerator: SecureAccessKeysEngine,
 ) : WithAppAuthenticationEnvironment, WithAccessCreation {
+
+    override lateinit var appAuthenticationEnvironment: AppAuthenticationEnvironment
 
     operator fun invoke(dto: GetOauthTokenDTO) =
         withSignedApp { app ->

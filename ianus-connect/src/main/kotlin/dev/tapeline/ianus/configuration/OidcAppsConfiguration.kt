@@ -6,7 +6,7 @@ import java.time.Duration
 
 @ConfigurationProperties(prefix = "connect")
 data class OidcAppsConfiguration(
-    val apps: Array<OidcAppConfiguration>
+    val apps: Array<OidcAppConfiguration>,
 )
 
 data class OidcAppConfiguration(

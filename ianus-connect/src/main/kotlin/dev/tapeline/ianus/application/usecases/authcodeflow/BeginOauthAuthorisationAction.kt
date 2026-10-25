@@ -15,6 +15,7 @@ import dev.tapeline.ianus.domain.app.AppName
 import dev.tapeline.ianus.domain.intent.Intent
 import dev.tapeline.ianus.domain.intent.IntentToken
 import dev.tapeline.ianus.domain.scope.Scope
+import org.springframework.stereotype.Component
 import java.net.URI
 
 data class BeginOauthAuthorisationDTO(
@@ -31,7 +32,8 @@ data class BeginOauthAuthorisationResult(
     val scopes: Set<Scope>
 )
 
-class BeginOauthAuthorisation(
+@Component
+class BeginOauthAuthorisationAction(
     override val userAuthenticator: UserAuthenticator,
     private val apps: AppRepository,
     private val intentEngine: IntentEngine,

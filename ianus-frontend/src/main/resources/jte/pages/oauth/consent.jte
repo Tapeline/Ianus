@@ -24,6 +24,7 @@ extendScripts = @`
             }
         })
         $("#accept-btn").click((e) => {
+            var params = new URLSearchParams(window.location.search);
             e.preventDefault()
             makeBtnLoading($("#accept-btn"))
             callPostApi(

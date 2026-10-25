@@ -5,6 +5,7 @@ options:
   model-type: record
   bean-validation: true
   one-of-interface: true
+  enum-type: framework
 
 map:
   result: org.springframework.http.ResponseEntity

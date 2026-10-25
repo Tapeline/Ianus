@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0003-create-access-grants
+      author: Tapeline
+      changes:
+        - createTable:
+            tableName: ianus_access_grants
+            columns:
+              - column:
+                  name: id
+                  type: text
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: app_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: scopes
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: issued_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ttl
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: refresh_token
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revoked
+                  type: boolean
+                  constraints:
+                    nullable: false

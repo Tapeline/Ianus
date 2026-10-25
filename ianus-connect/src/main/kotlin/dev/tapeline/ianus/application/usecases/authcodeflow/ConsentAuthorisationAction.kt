@@ -12,6 +12,7 @@ import dev.tapeline.ianus.configuration.AuthorisationCodeConfiguration
 import dev.tapeline.ianus.domain.authcode.AuthorisationCode
 import dev.tapeline.ianus.domain.authcode.AuthorisationCodeClaims
 import dev.tapeline.ianus.domain.intent.IntentToken
+import org.springframework.stereotype.Component
 import java.net.URI
 
 data class ConsentAuthorisationResult(
@@ -19,7 +20,8 @@ data class ConsentAuthorisationResult(
     val redirectUri: URI,
 )
 
-class ConsentAuthorisation(
+@Component
+class ConsentAuthorisationAction(
     private val tx: Transaction,
     private val intentEngine: IntentEngine,
     override val userAuthenticator: UserAuthenticator,

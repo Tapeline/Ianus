@@ -42,17 +42,33 @@ account:
     minPasswordLength: 8
     enabled: true
 
+issuer:
+  issuer: http://localhost:8080
+
 connect:
   apps:
-    - id: myclient1
+    - id: myapp
       name: Test OIDC client
-      secret: djhdfsdkhjfgsdjfkghsdfg
+      #       secret
+      secret: $argon2id$v=19$m=60000,t=10,p=1$7ckGMfZ1/EhArzu2CITZ0w$Cz+uPCy1BVPF0WVFhHxSN6U4guTKYkB75Ei+kJKtPU0
       scopes:
         - openid
+      redirectUri: https://oidcdebugger.com/debug
+    - id: testapp
+      name: Test OIDC client 2
+      #       secret
+      secret: $argon2id$v=19$m=60000,t=10,p=1$7ckGMfZ1/EhArzu2CITZ0w$Cz+uPCy1BVPF0WVFhHxSN6U4guTKYkB75Ei+kJKtPU0
+      scopes:
+        - openid
+      redirectUri: http://localhost:9009
   intent:
     ttl: 5m
+    signingKey: changemechangemechangemechangeme
+    encryptionKey: changemechangemechangemechangeme
   authorisationCode:
     ttl: 5m
+    signingKey: changemechangemechangemechangeme
+    encryptionKey: changemechangemechangemechangeme
   token:
     accessTokenLengthBytes: 128
     refreshTokenLengthBytes: 128
@@ -62,10 +78,10 @@ logging:
   level:
     # org.springframework.security: TRACE
     org.springframework.web: DEBUG
-    org.springframework.boot.autoconfigure: DEBUG
+    # org.springframework.boot.autoconfigure: DEBUG
     org.springframework.web.servlet.DispatcherServlet: TRACE
     org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
-    org.springframework.web.servlet.view: TRACE
+    # org.springframework.web.servlet.view: TRACE
 gg:
   jte:
     developmentMode: true
